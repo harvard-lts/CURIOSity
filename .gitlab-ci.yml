@@ -1,44 +1,64 @@
 ---
 stages:
-  - build #TODO: change this config to build/go once untangled
-  # - go #TODO: change this config to build/go once untangled
-  - test #TODO: change this config to build/go once untangled
-  - staging #TODO: change this config to build/go once untangled
+  - build
+  - go
 
-include:
-  - ci/spotlight.yaml #TODO: pull this in a level
+before_script:
+  - export TAG=${CI_COMMIT_SHORT_SHA}
+  - export BRANCH=${CI_COMMIT_REF_NAME}
+  - export REGISTRY_HOST=${CI_REGISTRY}
+  - export REGISTRY_URI="/${CI_PROJECT_PATH}"
 
-  # Helm 3 deployment helper functions
-.helm3_deploy_helpers: &helm3_deploy_helpers |
-  function deploy() {
-    helm repo update
+spotlight.build:
+  stage: build
+  script:
+    - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
+    - docker build -f Dockerfile . --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  tags:
+    - local
 
-    chart="${1}"
-    config="${2-$KUBECONFIG_JIO_STAGE}" #TODO: change KUBECONFIG_JIO_STAGE
+# lint:
+#   stage: go
+#   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+#   variables:
+#     PRONTO_GITLAB_API_ENDPOINT: "https://gitlab.com/api/v4"
+#   before_script:
+#     - export PRONTO_GITLAB_API_PRIVATE_TOKEN=$GITLAB_API_TOKEN
+#   allow_failure: false
+#   script:
+#     - git fetch && git checkout main && git checkout ${CI_COMMIT_SHORT_SHA}
+#     - bundle check || bundle
+#     - bundle exec pronto run -f gitlab -c origin/main
+#     - cd /app/samvera/hyrax-webapp && bundle exec rubocop -P
+#   tags:
+#     - docker
 
-    helm upgrade \
-        --kubeconfig "${config}" \
-        --install \
-        --atomic \
-        --timeout 15m0s \
-        --set image.repository="$DEPLOY_IMAGE" \
-        --set image.tag="$DEPLOY_TAG" \
-        $HELM_EXTRA_ARGS \
-        --namespace="$KUBE_NAMESPACE" \
-        --create-namespace \
-        "$HELM_RELEASE_NAME" \
-        "${chart}"
-  }
+# test:
+#   stage: go
+#   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+#   allow_failure: true
+#   variables:
 
-  function delete() {
-    echo "Deleting release: $HELM_RELEASE_NAME..."
-    helm --kubeconfig $KUBECONFIG_JIO_STAGE delete --namespace "$KUBE_NAMESPACE" "$HELM_RELEASE_NAME" #TODO: change KUBECONFIG_JIO_STAGE
-  }
 
-.helm3-deploy:
-  image: dtzar/helm-kubectl:3.5.3
-  variables:
-    HELM_EXPERIMENTAL_OCI: 1
-    HELM_VALUES_FILE: /helm-values.yml
-  before_script:
-    - *helm3_deploy_helpers
+# spotlight.staging:
+#   stage: go
+#   extends:
+#     - .deploy
+#   only:
+#     refs:
+#       - main
+#   variables:
+#     DEPLOY_IMAGE: $CI_REGISTRY_IMAGE
+#     DEPLOY_TAG: $CI_COMMIT_SHORT_SHA
+#     HELM_EXTRA_ARGS: >
+#       --values ops/staging-deploy.yaml
+#   script:
+#     - envsubst < ops/staging-deploy.tmpl.yaml > ops/staging-deploy.yaml
+#     - ./bin/helm_deploy hyku-staging staging
+#   tags:
+#     - docker
+
+# .deploy:
+#   image: dtzar/helm-kubectl:3.5.3

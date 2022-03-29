@@ -1,0 +1,37 @@
+imagePullSecrets:
+  - name: gitlab-registry
+
+# ingress:
+#   enabled: true
+#   hosts:
+#     - host: exhibits.staging.jioinstitute.edu.in
+#       paths:
+#         - path: /
+#   tls:
+#     - hosts:
+#       - exhibitis.staging.jioinstitute.edu.in
+#       secretName: spotlight-tls
+#   annotations:
+#      appgw.ingress.kubernetes.io/ssl-redirect: "true"
+#      cert-manager.io/cluster-issuer: letsencrypt-prod
+
+# persistence:
+#   enabled: true
+
+# uploadStorage:
+#   size: 20Gi
+#   className: azurefile
+
+# solr:
+#   enabled: fals
+
+# solrExistingSecret: solr-admin-password
+# externalSolrHost: solr.solr.svc.cluster.local
+# externalSolrUser: admin
+# externalSolrCollection: spotlight
+
+# env:
+#   configmap:
+#     APP_HOST: exhibits.staging.jioinstitute.edu.in
+#   secret:
+#     SENTRY_DSN: https://573cfffeb9ce4bbaa8e7cf386fb616fc:97f8fec3d8fc48c2a9cf5b7a6e65d39b@sentry.notch8.com/62

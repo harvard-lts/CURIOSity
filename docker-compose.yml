@@ -12,7 +12,7 @@ services:
       - .env
     environment:
       - VIRTUAL_PORT=3000
-      - VIRTUAL_HOST=.spotlight.test
+      - VIRTUAL_HOST=spotlight.test
     depends_on:
       - postgres
       - db_migrate

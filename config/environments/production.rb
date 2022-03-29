@@ -57,12 +57,31 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
 
   # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "harvard_production"
+  if ENV['SMTP_ENABLED'].present? && ENV['SMTP_ENABLED'].to_s == 'true'
+    config.action_mailer.smtp_settings = {
+      user_name: ENV['SMTP_USER_NAME'],
+      password: ENV['SMTP_PASSWORD'],
+      address: ENV['SMTP_ADDRESS'],
+      domain: ENV['SMTP_DOMAIN'],
+      port: ENV['SMTP_PORT'],
+      enable_starttls_auto: true,
+      authentication: ENV['SMTP_TYPE']
+    }
+    # ActionMailer Config
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.perform_deliveries = true
+    config.action_mailer.raise_delivery_errors = false
+    config.action_mailer.asset_host = ENV['APP_HOST']
+  else
+    config.action_mailer.delivery_method = :test
+  end
 
+  config.action_mailer.default_url_options = { host: ENV['APP_HOST'], protocol: 'https' }
   config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.
