@@ -1,0 +1,44 @@
+---
+stages:
+  - build #TODO: change this config to build/go once untangled
+  # - go #TODO: change this config to build/go once untangled
+  - test #TODO: change this config to build/go once untangled
+  - staging #TODO: change this config to build/go once untangled
+
+include:
+  - ci/spotlight.yaml #TODO: pull this in a level
+
+  # Helm 3 deployment helper functions
+.helm3_deploy_helpers: &helm3_deploy_helpers |
+  function deploy() {
+    helm repo update
+
+    chart="${1}"
+    config="${2-$KUBECONFIG_JIO_STAGE}" #TODO: change KUBECONFIG_JIO_STAGE
+
+    helm upgrade \
+        --kubeconfig "${config}" \
+        --install \
+        --atomic \
+        --timeout 15m0s \
+        --set image.repository="$DEPLOY_IMAGE" \
+        --set image.tag="$DEPLOY_TAG" \
+        $HELM_EXTRA_ARGS \
+        --namespace="$KUBE_NAMESPACE" \
+        --create-namespace \
+        "$HELM_RELEASE_NAME" \
+        "${chart}"
+  }
+
+  function delete() {
+    echo "Deleting release: $HELM_RELEASE_NAME..."
+    helm --kubeconfig $KUBECONFIG_JIO_STAGE delete --namespace "$KUBE_NAMESPACE" "$HELM_RELEASE_NAME" #TODO: change KUBECONFIG_JIO_STAGE
+  }
+
+.helm3-deploy:
+  image: dtzar/helm-kubectl:3.5.3
+  variables:
+    HELM_EXPERIMENTAL_OCI: 1
+    HELM_VALUES_FILE: /helm-values.yml
+  before_script:
+    - *helm3_deploy_helpers
