@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "spotlight.fullname" . }}
+  labels:
+    {{- include "spotlight.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "spotlight.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "spotlight.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "spotlight.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: load-solr-config
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "spotlight.fullname" . }}-env
+            - secretRef:
+                name: {{ template "spotlight.fullname" . }}
+            {{- if .Values.solrExistingSecret }}
+            - secretRef:
+                name: {{ .Values.solrExistingSecret }}
+            {{- end }}
+          command:
+            - sh
+            - -c
+            - >
+              bin/solrcloud-upload-configset.sh /app/spotlight/solr/conf &&
+              bin/solrcloud-assign-configset.sh
+        - name: setup-db
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "spotlight.fullname" . }}-env
+            - secretRef:
+                name: {{ template "spotlight.fullname" . }}
+            {{- if .Values.solrExistingSecret }}
+            - secretRef:
+                name: {{ .Values.solrExistingSecret }}
+            {{- end }}
+            {{- if .Values.pgExistingSecret }}
+            - secretRef:
+                name: {{ .Values.pgExistingSecret }}
+            {{- end }}
+          command:
+            - sh
+            - -c
+            - >
+              bin/db-wait.sh $POSTGRES_HOST:$POSTGRES_PORT bundle exec rake db:prepare
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "spotlight.fullname" . }}-env
+            - secretRef:
+                name: {{ template "spotlight.fullname" . }}
+            {{- if .Values.solrExistingSecret }}
+            - secretRef:
+                name: {{ .Values.solrExistingSecret }}
+            {{- end }}
+            {{- if .Values.pgExistingSecret }}
+            - secretRef:
+                name: {{ .Values.pgExistingSecret }}
+            {{- end }}
+          volumeMounts:
+             - name: uploads
+               mountPath: /app/spotlight/public/uploads
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: uploads
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ template "spotlight.fullname" . }}-uploads
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -23,14 +23,14 @@ RUN apk --no-cache upgrade && \
 
 RUN gem update bundler
 
-RUN mkdir -p /app/harvard-curiosity
-WORKDIR /app/harvard-curiosity
+RUN mkdir -p /app/spotlight
+WORKDIR /app/spotlight
 
-COPY --chown=1001:101 $APP_PATH/Gemfile* /app/harvard-curiosity/
+COPY --chown=1001:101 $APP_PATH/Gemfile* /app/spotlight/
 RUN bundle check || bundle install --jobs "$(nproc)"
 
-COPY --chown=1001:101 $APP_PATH app/harvard-curiosity
+COPY --chown=1001:101 $APP_PATH /app/spotlight
 
-RUN DB_ADAPTER=nulldb DATABASE_URL='postgresql://fake' bundle exec rake assets:precompile
+# RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DATABASE_URL='postgresql://fake' bundle exec rake assets:precompile
 
 CMD ["bundle", "exec", "puma", "-b", "tcp://0.0.0.0:3000"]

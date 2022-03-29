@@ -1,0 +1,19 @@
+apiVersion: v2
+name: spotlight
+description: A Helm chart for Spotlight
+type: application
+version: 0.1.0
+appVersion: "3.0.0-rc5"
+dependencies:
+  - name: postgresql
+    version: 10.5.2
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+  - name: redis
+    version: 13.0.1
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled
+  - name: solr
+    version: 1.0.1
+    repository: https://charts.bitnami.com/bitnami
+    condition: solr.enabled

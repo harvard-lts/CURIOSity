@@ -1,0 +1,10 @@
+storage:
+  size: 100Gi
+
+postgresql:
+  enabled: false
+
+externalPostgresql:
+  host: pg-postgresql.postgresql.svc.cluster.local
+  username: postgres
+  password:

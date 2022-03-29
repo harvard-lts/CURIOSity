@@ -1,0 +1,17 @@
+{{- if .Values.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "spotlight.fullname" . }}-uploads
+  labels:
+    {{- include "spotlight.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.uploadStorage.size | default "10Gi" }}
+  {{- if .Values.uploadStorage.className }}
+  storageClassName: "{{ .Values.uploadStorage.className }}"
+  {{- end }}
+{{- end }}
