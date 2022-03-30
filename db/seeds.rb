@@ -8,7 +8,10 @@
 # seed the database with users who can access the admin page
 [
   { email: 'rob@notch8.com', password: 'testing123'},
-  { email: 'support@notch8.com', password: 'testing123'}
+  { email: 'support@notch8.com', password: 'testing123'},
+  { email: 'admin@example.com', password: 'testing123'},
+  { email: 'user@notch8.com', password: 'testing123'},
+  { email: 'user@example.com', password: 'testing123'}
 ].each do |set|
   next if User.find_by(email: set[:email])
   user = User.create!(email: set[:email], password: set[:password])
