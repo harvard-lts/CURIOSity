@@ -46,23 +46,23 @@ spotlight.build:
 #   variables:
 
 
-# spotlight.staging:
-#   stage: go
-#   extends:
-#     - .deploy
-#   only:
-#     refs:
-#       - main
-#   variables:
-#     DEPLOY_IMAGE: $CI_REGISTRY_IMAGE
-#     DEPLOY_TAG: $CI_COMMIT_SHORT_SHA
-#     HELM_EXTRA_ARGS: >
-#       --values ops/spotlight-staging.yaml
-#   script:
-#     - envsubst < ops/spotlight-staging.tmpl.yaml > ops/spotlight-staging.yaml
-#     - ./bin/helm_deploy hyku-staging staging
-#   tags:
-#     - docker
+spotlight.staging:
+  stage: go
+  extends:
+    - .deploy
+  only:
+    refs:
+      - main
+  variables:
+    DEPLOY_IMAGE: $CI_REGISTRY_IMAGE
+    DEPLOY_TAG: $CI_COMMIT_SHORT_SHA
+    HELM_EXTRA_ARGS: >
+      --values ops/spotlight-staging.yaml
+  script:
+    - envsubst < ops/spotlight-staging.tmpl.yaml > ops/spotlight-staging.yaml
+    - ./bin/helm_deploy hyku-staging staging
+  tags:
+    - docker
 
-# .deploy:
-#   image: dtzar/helm-kubectl:3.5.3
+.deploy:
+  image: dtzar/helm-kubectl:3.5.3
