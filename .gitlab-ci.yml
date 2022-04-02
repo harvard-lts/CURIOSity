@@ -61,7 +61,7 @@ spotlight.staging:
       --values ops/spotlight-staging.yaml
   script:
     - envsubst < ops/spotlight-staging.tmpl.yaml > ops/spotlight-staging.yaml
-    - ./bin/helm_deploy hyku-staging staging
+    - ./bin/helm_deploy spotlight-staging staging
   tags:
     - docker
 
