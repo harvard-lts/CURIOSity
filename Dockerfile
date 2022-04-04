@@ -27,6 +27,7 @@ RUN mkdir -p /app/spotlight
 WORKDIR /app/spotlight
 
 COPY --chown=1001:101 $APP_PATH/Gemfile* /app/spotlight/
+RUN bundle config set force_ruby_platform true
 RUN bundle check || bundle install --jobs "$(nproc)"
 
 COPY --chown=1001:101 $APP_PATH /app/spotlight
