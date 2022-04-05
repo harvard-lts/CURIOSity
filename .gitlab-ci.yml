@@ -61,7 +61,7 @@ spotlight.staging:
       --values ops/staging-values.yaml
   script:
     - envsubst < ops/staging-values.tmpl.yaml > ops/staging-values.yaml
-    - ./ops/chart/bin/helm_deploy spotlight-staging staging
+    - ./ops/chart/bin/helm_deploy harvard-spotlight-staging harvard-spotlight-staging
   tags:
     - docker
 
