@@ -58,10 +58,10 @@ spotlight.staging:
     DEPLOY_IMAGE: $CI_REGISTRY_IMAGE
     DEPLOY_TAG: $CI_COMMIT_SHORT_SHA
     HELM_EXTRA_ARGS: >
-      --values ops/spotlight-staging.yaml
+      --values ops/staging-values.yaml
   script:
-    - envsubst < ops/spotlight-staging.tmpl.yaml > ops/spotlight-staging.yaml
-    - ./bin/helm_deploy spotlight-staging staging
+    - envsubst < ops/staging-values.tmpl.yaml > ops/staging-values.yaml
+    - ./ops/chart/bin/helm_deploy spotlight-staging staging
   tags:
     - docker
 

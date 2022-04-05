@@ -5,7 +5,7 @@
 #
 if [ -z "$1" ] || [ -z "$2" ]
 then
-    echo './bin/deploy RELEASE_NAME NAMESPACE'
+    echo './chart/bin/helm_deploy RELEASE_NAME NAMESPACE'
     exit 1
 fi
 release_name="${1}"
@@ -25,4 +25,4 @@ helm upgrade \
     --namespace="$namespace" \
     --create-namespace \
     "$release_name" \
-    "${chart}"
+    ops/chart

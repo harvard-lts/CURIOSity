@@ -6,7 +6,7 @@
 
 if [ -z "$1" ] || [ -z "$2" ]
 then
-    echo './bin/delete RELEASE_NAME NAMESPACE'
+    echo './chart/bin/helm_delete RELEASE_NAME NAMESPACE'
     exit 1
 fi
 release_name="${1}"
