@@ -40,7 +40,7 @@ services:
 
   postgres:
     image: postgres:latest
-    restart: always
+    restart: on-failure
     environment:
       - POSTGRES_USER=spotlight_user
       - POSTGRES_PASSWORD=spotlight_password
