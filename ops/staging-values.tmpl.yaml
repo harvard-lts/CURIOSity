@@ -6,9 +6,10 @@ imagePullSecrets:
 persistence:
   enabled: true
 
-uploadStorage:
-  size: 20Gi
-  className: ebs
+shared:
+  uploadStorage:
+    size: 20Gi
+    className: nfs
 
 podSecurityContext:
   runAsUser: 1001

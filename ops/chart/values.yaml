@@ -17,9 +17,10 @@ fullnameOverride: ""
 persistence:
   enabled: true
 
-uploadStorage:
-  size: 10Gi
-  # className: my-storage-class
+shared:
+  uploadStorage:
+    size: 10Gi
+    # className: my-storage-class
 
 serviceAccount:
   # Specifies whether a service account should be created
