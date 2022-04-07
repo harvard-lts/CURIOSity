@@ -56,3 +56,5 @@ externalSolrCollection: "spotlight"
 env:
   configmap:
     APP_HOST: staging-harvard-spotlight.notch8.cloud
+  secret:
+      SENTRY_DSN: $SENTRY_DSN
