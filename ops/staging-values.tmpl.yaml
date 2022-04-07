@@ -8,7 +8,7 @@ persistence:
 
 shared:
   uploadStorage:
-    size: 20Gi
+    size: 40Gi
     className: nfs
 
 podSecurityContext:

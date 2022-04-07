@@ -53,6 +53,8 @@ spotlight.staging:
   only:
     refs:
       - main
+      - branch
+  when: manual
   variables:
     DEPLOY_IMAGE: $CI_REGISTRY_IMAGE
     DEPLOY_TAG: $CI_COMMIT_SHORT_SHA
