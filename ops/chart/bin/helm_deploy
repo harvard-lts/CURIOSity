@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# This script wraps up helm deployment. It is meant as a clear starting point for
-# commandline deployment or CI based deployment. It requires the following ENV vars be set
-#
 if [ -z "$1" ] || [ -z "$2" ]
 then
     echo './chart/bin/helm_deploy RELEASE_NAME NAMESPACE'
@@ -12,8 +9,6 @@ release_name="${1}"
 namespace="${2}"
 
 helm repo update
-
-chart="${1}"
 
 helm upgrade \
     --install \

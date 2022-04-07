@@ -31,6 +31,6 @@ RUN bundle check || bundle install --jobs "$(nproc)"
 
 COPY --chown=1001:101 $APP_PATH /app/spotlight
 
-# RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DATABASE_URL='postgresql://fake' bundle exec rake assets:precompile
+RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DATABASE_URL='postgresql://fake' bundle exec rake assets:precompile
 
 CMD ["bundle", "exec", "puma", "-b", "tcp://0.0.0.0:3000"]
