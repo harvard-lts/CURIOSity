@@ -1,8 +1,12 @@
-ARG RUBY_VERSION=2.7.2
+ARG RUBY_VERSION=2.7.5
 FROM ruby:$RUBY_VERSION-alpine as spotlight
 
 ENV RAILS_SERVE_STATIC_FILES="1"
 ENV RAILS_LOG_TO_STDOUT="1"
+ARG APP_ID_NUMBER=199
+ARG APP_ID_NAME=curiosity
+ARG GROUP_ID_NUMBER=199
+ARG GROUP_ID_NAME=curiosity
 
 RUN apk --no-cache upgrade && \
   apk add --no-cache \
@@ -19,18 +23,21 @@ RUN apk --no-cache upgrade && \
   sqlite-dev \
   tzdata \
   yarn \
-  zip
+  zip && \
+  addgroup -S ${GROUP_ID_NAME} -g ${GROUP_ID_NUMBER} && \
+  adduser -h /home/${APP_ID_NAME} -s /bin/sh -u ${APP_ID_NUMBER} -S ${APP_ID_NAME} -G ${GROUP_ID_NAME}
 
-RUN gem update bundler
+RUN gem update bundler 
 
 RUN mkdir -p /app/spotlight
 WORKDIR /app/spotlight
 
-COPY --chown=1001:101 $APP_PATH/Gemfile* /app/spotlight/
-RUN bundle config set force_ruby_platform true
-RUN bundle check || bundle install --jobs "$(nproc)"
+COPY --chown=curiosity . /app/spotlight
+RUN bundle config set force_ruby_platform true && \
+bundle install --jobs "$(nproc)" && \
+yarn install
 
-COPY --chown=1001:101 $APP_PATH /app/spotlight
+USER curiosity
 
 RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DATABASE_URL='postgresql://fake' bundle exec rake assets:precompile
 
