@@ -13,10 +13,6 @@ services:
     environment:
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=spotlight.test
-    depends_on:
-      - postgres
-      - db_migrate
-      - solr
     ports:
       - 3000:3000
     volumes:

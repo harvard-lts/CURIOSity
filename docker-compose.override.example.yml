@@ -1,6 +1,12 @@
 version: '3.8'
 
 services:
+  web: &app
+    depends_on:
+      - postgres
+      - db_migrate
+      - solr
+
   db_migrate:
     image: spotlight
     env_file:
