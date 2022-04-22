@@ -43,7 +43,9 @@ gem install stack_car
 sc up
 ```
 
-### First time spin up
+### Running within a fully containerized Docker setup
+
+#### First time spin up
 
 1. Clone the project
 
@@ -51,13 +53,19 @@ sc up
 git clone git@github.com:harvard-lts/CURIOSity.git
 ```
 
-2. Build the Docker image(s) using `stack_car`
+2. Enable full containerization overrides
+
+```bash
+cp docker-compose.override.example.yml docker-compose.override.yml
+```
+
+3. Build the Docker image(s) using `stack_car`
 
 ```bash
 sc build
 ```
 
-3. Start the Docker containers
+4. Start the Docker containers
 
 ```bash
 dory up
@@ -74,11 +82,11 @@ After running these initial steps, you should be able to run the project just by
 sc up
 ```
 
-### Admin login info
+#### Admin login info
 
 You can find login credentials in the [db/seeds.rb](db/seeds.rb) file.
 
-### Other useful commands
+#### Other useful commands
 
 - Run migrations & seeds
 

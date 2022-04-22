@@ -1,3 +1,6 @@
+# Optional overrides to run within a fully Dockerized stack. To use these overrides,
+# copy this file to docker-compose.override.yml and restart your containers.
+# WARNING: Data loss may or may not happen when switching between these options.
 version: '3.8'
 
 services:
