@@ -31,7 +31,7 @@ git clone git@github.com:harvard-lts/CURIOSity.git
 
 After running the above commands, check that you see the following output in the terminal, then navigate to http://localhost:3000
 
-`curiosity-db_migrate-1 exited with code 0`
+```curiosity-db_migrate-1 exited with code 0```
 
 NOTE: I still had to shell in and run rails db:migrate
 
@@ -45,6 +45,8 @@ To import these:
 rails db:migrate
 rails db:seed
 ```
+
+Then try http://localhost:3000
 
 ### Troubleshooting
 
