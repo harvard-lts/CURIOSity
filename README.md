@@ -37,7 +37,7 @@ NOTE: I still had to shell in and run rails db:migrate
 
 ### Admin login info
 
-You can find login credentials in the [db/seeds.rb](db/seeds.rb) file. These SHOUDL NOT be brought in to anything beyond local.
+You can find login credentials in the [db/seeds.rb](db/seeds.rb) file. These SHOULD NOT be brought in to anything beyond local.
 
 To import these:
 
