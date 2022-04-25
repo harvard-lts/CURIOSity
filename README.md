@@ -25,9 +25,19 @@ git clone git@github.com:harvard-lts/CURIOSity.git
 
 2. Create the .env from env-example. Do NOT commit the .env file
 
-3. Build the Docker image(s) and bring up the stack
+3. Enable full containerization overrides
 
-```docker-compose -f docker-compose.yml up -d --build --force-recreate```
+```bash
+cp docker-compose.override.example.yml docker-compose.override.yml
+```
+
+4. Build the Docker image(s)
+
+```docker-compose build```
+
+5. Build the Docker image(s) and bring up the stack
+
+```docker-compose up -d --build --force-recreate```
 
 After running the above commands, check that you see the following output in the terminal, then navigate to http://localhost:3000
 

@@ -1,0 +1,60 @@
+# Optional overrides to run within a fully Dockerized stack. To use these overrides,
+# copy this file to docker-compose.override.yml and restart your containers.
+# WARNING: Data loss may or may not happen when switching between these options.
+version: '3.8'
+
+services:
+  web: &app
+    depends_on:
+      - postgres
+      - db_migrate
+      - solr
+
+  db_migrate:
+    image: spotlight
+    env_file:
+      - .env
+    entrypoint: ["sh", "-c"]
+    command:
+      - bin/db-wait.sh postgres:5432 bundle exec rake db:migrate
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app/spotlight
+    networks:
+      internal:
+
+  postgres:
+    image: postgres:latest
+    restart: on-failure
+    environment:
+      - POSTGRES_USER=spotlight_user
+      - POSTGRES_PASSWORD=spotlight_password
+      - POSTGRES_DB=spotlight
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - 5432
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      internal:
+
+  solr:
+    image: solr:8.8
+    env_file:
+      - .env
+    ports:
+      - 8983:8983
+    networks:
+      internal:
+    command:
+      - sh
+      - "-c"
+      - "solr-precreate spotlight /opt/solr/server/configsets/spotlightconf"
+    volumes:
+      - solr_home:/var/solr/data:cached
+      - ./solr/conf:/opt/solr/server/configsets/spotlightconf
+
+volumes:
+  db:
+  solr_home:
