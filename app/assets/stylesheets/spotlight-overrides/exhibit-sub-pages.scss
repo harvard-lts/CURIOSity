@@ -1,0 +1,35 @@
+@import 'harvard-bootstrap';
+
+.browse-landing {
+  .image-overlay {
+    border: 0;
+    border-radius: 0;
+    background: linear-gradient(#00000014, #000000b6);
+  }
+  .text-overlay {
+    display: flex;
+    align-items: flex-end;
+    background: linear-gradient(#00000014, #000000b6);
+    .browse-category-title {
+      text-align: start;
+      line-height: 32px;
+      text-shadow: none;
+      letter-spacing: 1px;
+      margin-bottom: 0;
+      top: unset;
+      transform: unset;
+      .title {
+        font-size: 32px;
+        color: $white;
+        text-transform: none;
+      }
+      .item-count {
+        text-transform: none;
+        font-size: 18px;
+        font-weight: 400;
+        margin-top: 0;
+        letter-spacing: 0;
+      }
+    }
+  }
+}
