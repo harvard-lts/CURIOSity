@@ -84,7 +84,7 @@ body {
     font-family: 'Trueno';
     font-size: 24px;
     text-transform: uppercase;
-    font-weight: 400;
+    font-weight: 700;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.67;
@@ -93,9 +93,9 @@ body {
 
     &.hl-top-header-title-collections {
       font-family: 'Lora';
-      font-size: 28px;
+      font-weight: 300;
       font-style: italic;
-      padding-left: 10px;
+      padding-left: 5px;
       text-transform: none;
       letter-spacing: normal;
     }
