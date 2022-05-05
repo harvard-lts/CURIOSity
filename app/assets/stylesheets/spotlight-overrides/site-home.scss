@@ -138,32 +138,64 @@ body {
   }
 }
 
-.exhibit-card {
-  padding-bottom: 5.5rem;
-  border: none;
+.exhibit-card-container {
+  position: relative;
 
-  .card-img {
-    background-color: transparent;
-    padding: 10px;
+  .exhibit-card-img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
-  .card-img-overlay {
-    background: $white;
-  }
-
-  .card-title {
+  .exhibit-card-title {
+    font-family: "Trueno", sans-serif;
+    position: absolute;
     font-size: 24px;
-    color: $gray-900;
+    color: $white;
     line-height: 30px;
-    padding-bottom: 5px;
     text-transform: none;
     letter-spacing: 1px;
+    bottom: 5%;
   }
 
+  .exhibit-card-overlay-description, 
+  .exhibit-card-overlay-title {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    transition: .8s ease;
+  }
+  
+  .exhibit-card-overlay-description {
+    background-color: $transparent-black;
+    opacity: 0;
+  }
+
+  .exhibit-card-overlay-title {
+    background: linear-gradient(#00000014, #000000b6);
+    opacity: 1;
+  }
   .description {
-    font-size: 12px;
-    color: $gray-550;
-    font-family: "Trueno";
-    line-height: 1.4;
+    font-family: 'Lora';
+    font-weight: 400;
+    color:$white;
+    font-size: 14px;
+    font-style: italic;
+    position: absolute;
+    width: inherit;
+    bottom: 5%;
+  }
+
+
+  &:hover .exhibit-card-overlay-description {
+    opacity: 1;
+  }
+
+  &:hover .exhibit-card-title {
+    opacity: 0;
   }
 }

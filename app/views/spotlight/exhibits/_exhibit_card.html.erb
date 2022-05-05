@@ -1,30 +1,27 @@
 <%# OVERRIDE Spotlight 3.3.0 to bring in Harvard theming for exhibit cards %>
 <div class="col mb-4">
-  <div class="card exhibit-card">
+  <div class="exhibit-card-container">
     <%= link_to exhibit, aria: { hidden: true  }, tabindex: '-1' do %>
       <% if exhibit.thumbnail.present? && exhibit.thumbnail.iiif_url %>
-        <%= image_tag(exhibit.thumbnail.iiif_url, class: 'card-img',  alt: '', role: 'presentation', skip_pipeline: true) %>
+        <%= image_tag(exhibit.thumbnail.iiif_url, class: 'exhibit-card-img',  alt: '', role: 'presentation', skip_pipeline: true) %>
       <% else %>
-        <%= image_tag 'spotlight/default_thumbnail.jpg', class: 'card-img default-thumbnail',  alt: '', role: 'presentation' %>
+        <%= image_tag 'spotlight/default_thumbnail.jpg', class: 'exhibit-card-img default-thumbnail',  alt: '', role: 'presentation' %>
       <% end %>
-    <% end %>
-    <div class="card-img-overlay pb-0 px-3">
-      <% unless exhibit.published? %>
-        <div class="badge badge-warning unpublished"><%= t('.unpublished') %></div>
-      <% end %>
-      <%= content_tag :h2, class: 'card-title text-center mt-3', aria: { describedby: "exhibit-description-#{exhibit.to_param}" } do %>
-        <span><%= exhibit.title %></span>
-      <% end %>
-      <% if exhibit.description  %>
-        <%= content_tag :div, id: "exhibit-description-#{exhibit.to_param}", class: 'card-text exhibit-description' do %>
-          <p class="description">
+      <div class='exhibit-card-overlay-title'>
+        <% unless exhibit.published? %>
+          <div class="badge badge-warning unpublished"><%= t('.unpublished') %></div>
+        <% end %>
+        <%= content_tag :h2, class: 'exhibit-card-title px-4', aria: { describedby: "exhibit-description-#{exhibit.to_param}" } do %>
+          <span><%= exhibit.title %></span>
+        <% end %> 
+      </div>
+      <div class="exhibit-card-overlay-description">
+        <% if exhibit.description  %>
+          <p class="description px-4">
             <%= exhibit.description.truncate(168) %>
           </p>
         <% end %>
-      <% end %>
-      <div class='py-2 d-flex justify-content-center'>
-        <%= link_to t(:'.visit_exhibit'), exhibit, class: "btn btn-primary p-2 m-1", role: "button" %>
       </div>
-    </div>
+    <% end %>
   </div>
 </div>
