@@ -18,10 +18,13 @@
       <div class="exhibit-card-overlay-description">
         <% if exhibit.description  %>
           <p class="description px-4">
-            <%= exhibit.description.truncate(168) %>
+            <%= exhibit.description.truncate(150) %>
           </p>
         <% end %>
       </div>
     <% end %>
   </div>
 </div>
+
+<%# the following script enables responsive css container queries for the font size on the exhibit description %>
+<script src="https://unpkg.com/cqfill"></script>

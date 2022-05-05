@@ -140,6 +140,8 @@ body {
 
 .exhibit-card-container {
   position: relative;
+  /* For the Polyfill */
+  --css-contain: layout inline-size;
 
   .exhibit-card-img {
     display: block;
@@ -150,7 +152,8 @@ body {
   .exhibit-card-title {
     font-family: "Trueno", sans-serif;
     position: absolute;
-    font-size: 24px;
+    line-height: 36px;
+    font-size: 32px;
     color: $white;
     line-height: 30px;
     text-transform: none;
@@ -183,7 +186,7 @@ body {
     font-family: 'Lora';
     font-weight: 400;
     color:$white;
-    font-size: 14px;
+    font-size: 17px;
     font-style: italic;
     position: absolute;
     width: inherit;
@@ -197,5 +200,16 @@ body {
 
   &:hover .exhibit-card-title {
     opacity: 0;
+  }
+
+  /* For the Polyfill */
+  @media --css-container and (max-width: 290px) {
+    .description {
+      font-size: 13px;
+    }
+    .exhibit-card-title {
+      font-size: 20px;
+      line-height: 28px;
+    }
   }
 }
