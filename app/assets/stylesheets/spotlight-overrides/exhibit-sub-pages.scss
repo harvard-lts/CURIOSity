@@ -33,3 +33,86 @@
     }
   }
 }
+
+.blacklight-feature_pages,
+.blacklight-about_pages {
+  #main-container {
+    margin-top: 1rem;
+    .st__content-block--text {
+      margin-bottom: 2rem
+    }
+    .page-title {
+      font-weight: 700;
+      font-size: 32px;
+      text-transform: uppercase;
+      letter-spacing: 2.4px;
+      line-height: 42px;
+      margin-bottom: 20px;
+    }
+    .spotlight-flexbox.browse-categories {
+      justify-content: space-between;
+    }
+    .page-sidebar {
+      .nav-heading.h4 {
+        background-color: $gray-100;
+        margin: 0;
+        padding: 1.5rem 1.5rem 0;
+        border-bottom: 0 !important;
+      }
+      .sidenav {
+        background-color: $gray-100;
+        padding: .5rem 1.5rem 2rem;
+        &.contacts {
+          padding: .5rem 1.5rem;
+          .contact-properties a {
+            text-transform: none;
+          }
+        }
+        li, li.nav-item {
+          margin-top: 1.5rem;
+          a, a.nav-link {
+            color: $black;
+            line-height: 1.5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+          }
+          h2.h6 {
+            font-size: 14px;
+          }
+          &.active {
+            color: $black;
+            a, a.nav-link {
+              color: $black;
+              line-height: 1.5;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+            }
+            h2.h6 {
+              font-weight: 600;
+              text-decoration: underline;
+              text-decoration-thickness: 3px;
+              text-decoration-color:  rgba(5, 121, 184, 0.3);
+              text-underline-offset: 3px;
+              line-height: 1.6;
+            }
+          }
+          .subsection {
+            margin-bottom: 0;
+            li {
+              margin-top: .5rem;
+              list-style: none;
+              margin-left: 0;
+              a {
+                color: $black;
+                font-weight: 400;
+              }
+              &.active {
+                font-family: 'Trueno';
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
