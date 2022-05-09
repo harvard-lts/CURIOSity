@@ -40,5 +40,15 @@ class CatalogController < ApplicationController
 
     # Set which views by default only have the title displayed, e.g.,
     # config.view.gallery.title_only_by_default = true
+
+    # Maximum number of results to show per page
+    config.max_per_page = 96
+    # Options for the user for number of results to show per page
+    config.per_page = [12, 24, 48, 96]
+    
+    config.add_results_collection_tool(:sort_widget)
+    config.add_results_collection_tool(:per_page_widget)
+    config.add_results_collection_tool(:view_type_group)
+
   end
 end
