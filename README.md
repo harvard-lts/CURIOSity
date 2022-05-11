@@ -18,27 +18,34 @@ Blacklight / Spotlight
 
 dev: http://localhost:3000
 
-### First time spin up
+## Local Development Environment Setup Instructions
 
-1. Clone the project
+### 1. Clone the project
 
 ```bash
 git clone git@github.com:harvard-lts/CURIOSity.git
 ```
 
-2. Create the .env from env-example. Do NOT commit the .env file
+### 2: Create app environment variables
 
-3. Enable full containerization overrides
+##### Create config file for environment variables
+- Make a copy of the config example file `./env-example`
+- Rename the file to `.env`
+- Replace placeholder values as necessary
+
+*Note: The config file .env is specifically excluded in .gitignore and .dockerignore, since it contains credentials it should NOT ever be committed to any repository.*
+
+### 3. Enable full containerization overrides
 
 ```bash
 cp docker-compose.override.example.yml docker-compose.override.yml
 ```
 
-4. Build the Docker image(s)
+### 4. Build the Docker image(s)
 
 `docker-compose build`
 
-5. Build the Docker image(s) and bring up the stack
+### 5. Build the Docker image(s) and bring up the stack
 
 `docker-compose up -d --build --force-recreate`
 
