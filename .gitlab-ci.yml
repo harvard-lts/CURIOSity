@@ -41,7 +41,6 @@ spotlight.build:
 #   allow_failure: true
 #   variables:
 
-
 spotlight.staging:
   stage: go
   extends:
